@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pixel Study Pug Companion - Pro Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+    <button class="icon-btn settings-btn" onclick="openSettings()" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+
+    <div id="environment">
+        <div class="pixel-bg-layer"></div>
+        <div id="pet-wrapper" onclick="petPug()">
+            <div id="base-pug"></div>
+            <div id="costume-overlay"></div>
+            <div id="shop-overlay"></div>
+        </div>
+    </div>
+
+    <div id="camera-panel" class="panel active">
+        <h2>Study Focus <span class="coin-display" onclick="spawnCoinDrop(10)">🪙 <span class="shop-coin-display">150</span></span></h2>
+        <p style="color: var(--text-muted); margin-top: 0; display: flex; justify-content: space-between;">
+            <span id="pet-name-display">Your Pug</span>
+            <span id="focus-mode-indicator" style="display:none; color:#e74c3c; font-weight:bold; font-size:0.8rem;">🎯 Focus Mode ON</span>
+        </p>
+        
+        <input type="text" id="task-input" class="modern-input" placeholder="What are you focusing on?" maxlength="30">
+        
+        <div id="timer-display" onclick="openDurationPicker()">25:00</div>
+        
+        <div id="duration-picker" class="hidden">
+            <div class="chip-container">
+                <button class="chip" onclick="setDuration(15)">15m</button>
+                <button class="chip" onclick="setDuration(25)">25m</button>
+                <button class="chip" onclick="setDuration(45)">45m</button>
+                <button class="chip" onclick="setDuration(60)">60m</button>
+            </div>
+            <div class="stepper-container">
+                <button class="icon-btn" onclick="adjustDuration(-5)">-</button>
+                <span id="custom-duration-text">25 min</span>
+                <button class="icon-btn" onclick="adjustDuration(5)">+</button>
+            </div>
+            <button class="btn" style="width:100%; margin-top:10px;" onclick="closeDurationPicker()">Done</button>
+        </div>
+
+        <button class="btn" id="start-timer-btn" onclick="toggleTimer()">Start Session</button>
+    </div>
+
+    <div id="sparkles-panel" class="panel">
+        <h2 style="margin-bottom: 5px;">Costume Designer</h2>
+        <p style="color: var(--text-muted); margin-top: 0; font-size: 0.85rem;">Draw directly on the pattern grid.</p>
+        <div id="editor-grid"></div>
+        <div class="editor-controls">
+            <button class="btn" style="flex:1; background: #e74c3c;" onclick="clearCostume()">Clear</button>
+            <button class="btn" style="flex:1; background: #2ecc71;" onclick="eraserMode()">Eraser</button>
+        </div>
+        <p style="margin: 15px 0 5px 0; font-weight: bold;">Color Palette</p>
+        <div id="palette"></div>
+
+        <div class="wardrobe-section">
+            <h3 style="margin: 0 0 10px 0; font-size: 1rem;">My Wardrobe</h3>
+            <div class="wardrobe-controls">
+                <input type="text" id="costume-name-input" class="modern-input" placeholder="Name your costume...">
+                <button class="btn" style="padding: 10px; font-size: 0.9rem;" onclick="saveCostume()">Save</button>
+            </div>
+            <div id="wardrobe-list"></div>
+            <div class="wardrobe-controls" style="margin-top: 15px;">
+                <input type="text" id="costume-import-input" class="modern-input" placeholder="Paste a share code...">
+                <button class="btn" style="padding: 10px; font-size: 0.9rem; background: var(--accent);" onclick="importCostume()">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="inventory-panel" class="panel">
+        <h2>My Items <span class="coin-display">🪙 <span class="shop-coin-display">150</span></span></h2>
+        <p style="color: var(--text-muted); margin-top: 0; font-size: 0.85rem;">Equip your purchased items here.</p>
+        <div id="inventory-container" class="grid-container"></div>
+    </div>
+
+    <div id="shop-panel" class="panel">
+        <h2>Item Shop <span class="coin-display">🪙 <span class="shop-coin-display">150</span></span></h2>
+        <p style="color: var(--text-muted); margin-top: 0; font-size: 0.85rem;">Spend focus coins on pixel accessories.</p>
+        <div id="shop-container" class="grid-container"></div>
+    </div>
+
+    <div id="friends-panel" class="panel">
+        <h2>Leaderboard</h2>
+        <p style="color: var(--text-muted); margin-top: 0; font-size: 0.85rem;">See what your friends are doing.</p>
+        <button class="btn add-friend-btn" onclick="copyFriendCode()">+ Copy My Code</button>
+        <div id="friends-container"></div>
+    </div>
+
+    <div id="stats-panel" class="panel">
+        <h2>My Stats</h2>
+        <div class="streak-card">
+            <div class="streak-number">🔥 <span id="streak-count">0</span></div>
+            <div style="font-size: 0.9rem; color: var(--text-muted);">Day Streak</div>
+        </div>
+        
+        <h3 style="margin: 15px 0 5px 0; font-size: 1rem;">Activity Map</h3>
+        <div class="heatmap-container" id="heatmap-container"></div>
+
+        <h3 style="margin: 20px 0 5px 0; font-size: 1rem;">Recent Sessions</h3>
+        <div id="history-list" class="history-list"></div>
+    </div>
+
+    <div id="settings-panel" class="panel" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:100;">
+        <h2>Settings <button class="icon-btn" onclick="closeSettings()">X</button></h2>
+        
+        <div class="settings-group">
+            <label class="settings-label">Pet Name</label>
+            <input type="text" id="setting-pet-name" class="modern-input" value="Pug" onchange="updateSettings()">
+        </div>
+
+        <div class="settings-group">
+            <div class="toggle-row">
+                <span>Sound Effects</span>
+                <label class="switch"><input type="checkbox" id="setting-sound" onchange="updateSettings()"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+                <span>Notifications</span>
+                <label class="switch"><input type="checkbox" id="setting-notif" onchange="updateSettings()"><span class="slider"></span></label>
+            </div>
+            <div class="toggle-row">
+                <span>Strict Focus Mode <br><small style="color:var(--text-muted); font-weight:normal;">Fails session if you leave the app for >10s</small></span>
+                <label class="switch"><input type="checkbox" id="setting-focus" onchange="updateSettings()"><span class="slider"></span></label>
+            </div>
+        </div>
+
+        <div class="settings-group" style="margin-top: 20px;">
+            <label class="settings-label">Data Backup</label>
+            <div style="display:flex; gap:10px;">
+                <button class="btn" style="flex:1; font-size:0.85rem;" onclick="exportData()">Export Save</button>
+                <label class="btn" style="flex:1; font-size:0.85rem; background:#2ecc71; text-align:center; cursor:pointer;">
+                    Import Save
+                    <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importData(event)">
+                </label>
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:5px;">Exporting saves a .json file to your device.</p>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Message</div>
+
+    <nav>
+        <button class="nav-btn active" data-target="camera" onclick="switchTab('camera', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Focus</button>
+        <button class="nav-btn" data-target="sparkles" onclick="switchTab('sparkles', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>Design</button>
+        <button class="nav-btn" data-target="inventory" onclick="switchTab('inventory', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Bag</button>
+        <button class="nav-btn" data-target="shop" onclick="switchTab('shop', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Shop</button>
+        <button class="nav-btn" data-target="friends" onclick="switchTab('friends', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 20V10M12 20V4M6 20v-4" stroke-linecap="round" stroke-linejoin="round"/></svg>Rank</button>
+        <button class="nav-btn" data-target="stats" onclick="switchTab('stats', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Stats</button>
+    </nav>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
